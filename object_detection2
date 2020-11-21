@@ -1,0 +1,40 @@
+import cv2
+import numpy as np
+
+def nothi(x):
+    pass
+
+img23=cv2.VideoCapture(0)
+
+cv2.namedWindow('track')
+cv2.createTrackbar("lh",'track',0,255,nothi)
+cv2.createTrackbar("ls",'track',0,255,nothi)
+cv2.createTrackbar("lv",'track',0,255,nothi)
+cv2.createTrackbar("uh",'track',0,255,nothi)
+cv2.createTrackbar("us",'track',0,255,nothi)
+cv2.createTrackbar("uv",'track',0,255,nothi)
+
+while(True):
+  rt,img=img23.read()
+  cv2.imshow('image23',img)
+  hsv=cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+  lh=cv2.getTrackbarPos('lh','track')
+  ls=cv2.getTrackbarPos('ls','track')
+  lv=cv2.getTrackbarPos('lv','track')
+
+  uh=cv2.getTrackbarPos('uh','track')
+  us=cv2.getTrackbarPos('us','track')
+  uv=cv2.getTrackbarPos('uv','track')
+
+
+  lb=np.array([lh,ls,lv])
+  ub=np.array([uh,us,uv])
+  mask1=cv2.inRange(hsv,lb,ub)
+  cv2.imshow('img1',mask)
+  res=cv2.bitwise_and(img,img,mask=mask1)
+  cv2.imshow('res',res)
+  if(cv2.waitKey(1)==ord('q')):
+    break;
+    
+img23.release()    
+cv2.destroyAllWindows() 
